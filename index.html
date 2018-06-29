@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Github Profile Viewer</title>
+    <!-- css stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400">
+</head>
+
+<body>
+    <header class="header">
+        Currency Converter
+    </header>
+    <div class="wrapper">
+            <span>Enter Amount</span>
+            <input name="inputAmount" type="number" step="0.000000000001" class="amount" id="inputAmount" placeholder="">
+
+            <span>From</span>
+            <select name="inputFromCurrency" class="form-control" id="inputFromCurrency">
+                <option selected>convert from</option>
+            </select>
+            <span>To</span>
+            <select name="inputToCurrency" class="form-control" id="inputToCurrency">
+                <option selected>convert to</option>
+            </select>
+
+            <input name="inputAmount" type="number" step="0.000000000001" class="converted-amount" id="convertedCurrency" placeholder="">
+            
+            <button id="convert" name="convert" class="btn-convert">
+                CONVERT
+            </button>
+    </div>
+        
+    <script src="idb/lib/idb.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/db.js"></script>
+</body>
+
+</html>
