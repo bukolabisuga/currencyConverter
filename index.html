@@ -33,10 +33,21 @@
             <button id="convert" name="convert" class="btn-convert">
                 CONVERT
             </button>
+
+            <div class="alert">
+                    <strong id='alert-message'></strong>
+                <button id='refresh' name="refresh" type="button" aria-label="Refresh" class="">
+                    Refresh
+                  </button>
+                  <button id='dismiss' name="dismiss" type="button" aria-label="Dismiss" class="">
+                    Dismiss
+                  </button>
+            </div>
     </div>
         
     <script src="idb/lib/idb.js"></script>
     <script src="js/main.js"></script>
+    <script src="service-worker.js"></script>
     <script src="js/db.js"></script>
 </body>
 

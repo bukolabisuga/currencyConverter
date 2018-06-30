@@ -1,4 +1,21 @@
-const staticCacheName = 'cc-v107';
+if ('serviceWorker' in navigator) {
+    // Register a service worker hosted at the root of the
+    // site using the default scope.
+    navigator.serviceWorker.register('/service-worker.js').then(registration => {
+        console.log('Service worker registration succeeded:', registration);
+    }).catch(error => {
+        console.log('Service worker registration failed:', error);
+    });
+} else {
+    console.log('Service workers are.');
+}
+
+const staticCacheName = 'currency-static-v26';
+
+let allCaches = [
+    staticCacheName
+];
+
 const urlsToCache = [
     '/',
     '/index.html',
@@ -14,13 +31,13 @@ const urlsToCache = [
     '/fonts/Gilroy-Medium.woff2'
 ];
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', event => {
     console.log('[ServiceWorker] install');
     event.waitUntil(
         caches.open(staticCacheName)
-        
+
             .then(
-                
+
                 (cache) => {
                     console.log('[ServiceWorker] Caching app shell');
                     return cache.addAll(urlsToCache);
@@ -29,31 +46,38 @@ self.addEventListener('install', (event) => {
     )
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', event => {
     console.log('[ServiceWorker] Activate');
     event.waitUntil(
-        caches.keys().then(
-            (cacheNames) => {
-                return Promise.all(cacheNames.map(
-                    (cacheName) => {
-                        if(cacheName !== staticCacheName) {
-                            console.log('[ServiceWorker] Removing old cache', cacheName);
-                            return caches.delete(cacheName);
-                        }
-                    }
-                ))
-            }
-        )
-    )
+        caches.keys().then( cacheNames => {
+            return Promise.all(
+                cacheNames.filter( cacheName => {
+                    console.log('[ServiceWorker] Removing old cache', cacheName);
+                    return cacheName.startsWith('currency-') &&
+                        !allCaches.includes(cacheName);
+                }).map( cacheName => {
+                    return caches.delete(cacheName);
+                })
+            );
+        })
+    );
 })
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', event => {
     console.log('[ServiceWorker] Fetch', event.request.url);
     event.respondWith(
-        caches.match(event.request).then(
-            response => {
-                return response || fetch(event.request);
-            }
-        )
-    )
+        caches.match(event.request).then(response => {
+            if (response) return response;
+            return fetch(event.request).then( response => {
+                // console.log('[ServiceWorker] Response', response);
+                return response
+            });
+        })
+    );
 })
+
+self.addEventListener('message', event => {
+    if (event.data.action === 'skipWaiting') {
+        self.skipWaiting();
+    }
+});
