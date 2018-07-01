@@ -9,7 +9,7 @@ if ('serviceWorker' in navigator) {
     console.log('Service workers are not supported.');
 }
 
-const staticCacheName = 'currency-static-v99';
+const staticCacheName = 'currency-static-v101';
 
 let allCaches = [
     staticCacheName
@@ -25,8 +25,7 @@ const urlsToCache = [
     './fonts/Gilroy-Bold.woff',
     './fonts/Gilroy-Bold.woff2',
     './fonts/Gilroy-Light.woff',
-    './fonts/Gilroy-Light.woff2',
-    './service-worker.js'
+    './fonts/Gilroy-Light.woff2'
 ];
 
 self.addEventListener('install', event => {
@@ -63,7 +62,7 @@ self.addEventListener('activate', event => {
 self.addEventListener("fetch", event => {
     // offline-first
     event.respondWith(
-      caches.match(event.request).then(cacheResponse => {
+        caches.match(event.request.url).then(cacheResponse => {
         return cacheResponse || fetch(event.request);
       })
     );
