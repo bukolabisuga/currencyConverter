@@ -9,7 +9,7 @@ if ('serviceWorker' in navigator) {
     console.log('Service workers are not supported.');
 }
 
-const staticCacheName = 'currency-static-v94';
+const staticCacheName = 'currency-static-v95';
 
 let allCaches = [
     staticCacheName
@@ -59,15 +59,24 @@ self.addEventListener('activate', event => {
     );
 })
 
-self.addEventListener('fetch', event => {
-    console.log('[ServiceWorker] Fetch', event.request.url);
+// self.addEventListener('fetch', event => {
+//     console.log('[ServiceWorker] Fetch', event.request.url);
+//     event.respondWith(
+//         caches.match(event.request).then(response => {
+//             if (response) return response;
+//             return fetch(event.request).then(response => {
+//                 // console.log('[ServiceWorker] Response', response);
+//                 return response
+//             });
+//         })
+//     );
+// })
+
+self.addEventListener("fetch", event => {
+    // offline-first
     event.respondWith(
-        caches.match(event.request).then(response => {
-            if (response) return response;
-            return fetch(event.request).then(response => {
-                // console.log('[ServiceWorker] Response', response);
-                return response
-            });
-        })
+      caches.match(event.request).then(cacheResponse => {
+        return cacheResponse || fetch(event.request);
+      })
     );
-})
+  });
