@@ -1,7 +1,3 @@
-if ('indexedDB' in window) {
-    console.log('YAAAAAAAYYYYY');
-}
-
 const dbPromise = idb.open('cc-db2', 4, upgradeDb => {
     switch (upgradeDb.oldVersion) {
         case 0:
@@ -13,15 +9,6 @@ const dbPromise = idb.open('cc-db2', 4, upgradeDb => {
     }
 
 });
- dbPromise.then(db => {
-    return db.transaction('conversion').objectStore('conversion').get(currency_pair);
-})
-.then(objFromIDB => {
-	// Returns the Object in the Value column
-    // For debugging purposes
-    console.log('you are done')
-	console.log(`no way ${objFromIDB}`);
-})
 
 const apiUrl = 'https://free.currencyconverterapi.com/api/v5/currencies';
 fetch(apiUrl)

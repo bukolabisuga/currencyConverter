@@ -10,7 +10,7 @@ if ('serviceWorker' in navigator) {
     console.log('Service workers are.');
 }
 
-const staticCacheName = 'currency-static-v26';
+const staticCacheName = 'currency-static-v52';
 
 let allCaches = [
     staticCacheName
@@ -37,7 +37,6 @@ self.addEventListener('install', event => {
         caches.open(staticCacheName)
 
             .then(
-
                 (cache) => {
                     console.log('[ServiceWorker] Caching app shell');
                     return cache.addAll(urlsToCache);
@@ -76,8 +75,8 @@ self.addEventListener('fetch', event => {
     );
 })
 
-self.addEventListener('message', event => {
-    if (event.data.action === 'skipWaiting') {
-        self.skipWaiting();
-    }
-});
+// self.addEventListener('message', event => {
+//     if (event.data.action === 'skipWaiting') {
+//         self.skipWaiting();
+//     }
+// });

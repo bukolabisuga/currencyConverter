@@ -35,7 +35,7 @@ function populateOptions(currencies) {
 }
 
 document.getElementById('convert').addEventListener('click', getConversion);
-
+// Where did you define dbPromise?
 function getConversion(amount, from, to, cb) {
     from = fromCurrencyInput.value.split('').splice(0, 3).join('');
     to = toCurrencyInput.value.split('').splice(0, 3).join('');
@@ -60,69 +60,42 @@ function getConversion(amount, from, to, cb) {
                 };
                 const ty = db.transaction('conversion', 'readwrite');
                 ty.objectStore('conversion').put(ex_rate);
+                console.log(`yessss ${JSON.stringify(ex_rate)}`);
                 return ty.complete;
             }).then(() => {
+                
                 console.log('Added exchange rate to conversion');
             });
-
         })
-
 }
 
-class MainController {
-    static registerServiceWorker() {
-        if (!navigator.serviceWorker) return;
-        navigator.serviceWorker.register('/sw.js').then((registration) => {
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            if (!navigator.serviceWorker.controller) {
-                return;
-            }
+retrieveRate();
+console.log(retrieveRate('USD_NGN'));
 
-            if (registration.waiting) {
-                MainController.updateReady(registration.waiting);
-                return;
-            }
-
-            if (registration.installing) {
-                MainController.trackInstalling(registration.installing);
-                return;
-            }
-
-            registration.addEventListener('updatefound', () => {
-                MainController.trackInstalling(registration.installing);
-            });
-
-            let refreshing;
-            navigator.serviceWorker.addEventListener('controllerchange', () => {
-                if (refreshing) return;
-                window.location.reload();
-                refreshing = true;
-            });
-        });
+function retrieveRate(ex_rate) {
+    if ('indexedDB' in window) {
+        console.log('YAAAAAAAYYYYY');
     }
-
-    static trackInstalling(worker) {
-        worker.addEventListener('statechange', () => {
-            if (worker.state === 'installed') {
-                MainController.updateReady(worker);
-            }
-        });
-    }
-
-    static updateReady(worker) {
-        MainController.showAlert('New version available');
-
-        refreshButton = document.getElementById('refresh');
-        dismissButton = document.getElementById('dismiss');
-
-        refreshButton.addEventListener('click', () => worker.postMessage({ action: 'skipWaiting' }));
-        dismissButton.addEventListener('click', () => alert.style.display = 'none');
-    }
-
-    // update-only notification alert
-    static showAlert(message) {
-        alert.style.display = 'flex';
-        const alertMessage = document.getElementById('alert-message');
-        alertMessage.innerText = message;
-    }
+    // here?
+    const dbPromise = idb.open('cc-db2', 4, upgradeDb => {
+        switch (upgradeDb.oldVersion) {
+            case 0:
+                console.log('making a new object store');
+                let converterStore = upgradeDb.createObjectStore('converter', { keyPath: 'id' });
+            case 1:
+                console.log('making second object store');
+                let conversionStore = upgradeDb.createObjectStore('conversion', { keyPath: 'pair' });
+        }
+    
+    });
+     dbPromise.then(db => {
+         let currency_pair = ex_rate;
+         console.log(currency_pair);
+        return db.transaction('conversion').objectStore('conversion').get(currency_pair);
+    })
+    .then(objFromIDB => {
+       
+        console.log('you are done')
+        console.log(`no way ${objFromIDB}`);
+    })
 }
