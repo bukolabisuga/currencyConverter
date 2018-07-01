@@ -69,14 +69,12 @@ function getConversion(amount, from, to, cb) {
         })
 }
 
-retrieveRate();
 console.log(retrieveRate('USD_NGN'));
 
 function retrieveRate(ex_rate) {
     if ('indexedDB' in window) {
         console.log('YAAAAAAAYYYYY');
     }
-    // here?
     const dbPromise = idb.open('cc-db2', 4, upgradeDb => {
         switch (upgradeDb.oldVersion) {
             case 0:
@@ -88,14 +86,17 @@ function retrieveRate(ex_rate) {
         }
     
     });
-     dbPromise.then(db => {
+    
+     return dbPromise.then(db => {
+         
+         console.log('DB Object is', db);
          let currency_pair = ex_rate;
-         console.log(currency_pair);
-        return db.transaction('conversion').objectStore('conversion').get(currency_pair);
+        return db.transaction('conversion').objectStore('conversion').get('USD_NGN');
     })
     .then(objFromIDB => {
        
         console.log('you are done')
         console.log(`no way ${objFromIDB}`);
+        return objFromIDB;
     })
 }

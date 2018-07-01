@@ -1,16 +1,14 @@
 if ('serviceWorker' in navigator) {
-    // Register a service worker hosted at the root of the
-    // site using the default scope.
     navigator.serviceWorker.register('/service-worker.js').then(registration => {
         console.log('Service worker registration succeeded:', registration);
     }).catch(error => {
         console.log('Service worker registration failed:', error);
     });
 } else {
-    console.log('Service workers are.');
+    console.log('Service workers are not supported.');
 }
 
-const staticCacheName = 'currency-static-v52';
+const staticCacheName = 'currency-static-v58';
 
 let allCaches = [
     staticCacheName
