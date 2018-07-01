@@ -9,7 +9,7 @@ function getCurrencies() {
         })
         .then(data => {
             let currencies = data.results;
-            // console.log(currencies);
+            console.log(currencies);
             populateOptions(currencies);
         });
     console.log(`Hello ALC!!!`)
@@ -18,19 +18,24 @@ getCurrencies();
 
 function populateOptions(currencies) {
     for (let currency of Object.keys(currencies).sort()) {
-        let { currencyName, id } = currencies[currency];
+        let { currencyName, currencySymbol, id } = currencies[currency];
         // console.log(currencyName)
         // console.log(id)
+        if (!currencySymbol) {
+            currencySymbol = 'No Symbol';
+        }
         let optionFrom = document.createElement('option');
-        optionFrom.innerText = `${id} ( ${currencyName} )`;
+        optionFrom.innerText = `${id} ( ${currencyName}, ${currencySymbol} )`;
         optionFrom.value = `${id}`;
 
         let optionTo = document.createElement('option');
-        optionTo.innerText = `${id} ( ${currencyName} )`;
+        optionTo.innerText = `${id} ( ${currencyName}, ${currencySymbol})`;
         optionTo.value = `${id}`;
 
         fromCurrencyInput.appendChild(optionFrom);
         toCurrencyInput.appendChild(optionTo);
+
+        let optionSymbol = `${currencySymbol}`;
     }
 }
 
@@ -39,6 +44,7 @@ document.getElementById('convert').addEventListener('click', getConversion);
 function getConversion(amount, from, to, cb) {
     from = fromCurrencyInput.value.split('').splice(0, 3).join('');
     to = toCurrencyInput.value.split('').splice(0, 3).join('');
+    console.log(toCurrencyInput.value);
     amount = amountInput.value;
     let query = `${from}_${to}`;
     console.log({ query })
@@ -51,7 +57,9 @@ function getConversion(amount, from, to, cb) {
             let rate = data[query];
             console.log(data[query]);
 
-            document.getElementById('convertedCurrency').value = Math.round(parseFloat(amount) * rate);
+            document.getElementById('convertedCurrency').innerText = `${(Math.round(parseFloat(amount) * rate)).toLocaleString('en')} ${to}`;
+
+            document.getElementById('convertedSummary').innerText = `${amount.toLocaleString('en')} ${from} at rate of ${rate.toFixed(2)} ${to}`;
 
             dbPromise.then(db => {
                 const ex_rate = {
@@ -67,36 +75,4 @@ function getConversion(amount, from, to, cb) {
                 console.log('Added exchange rate to conversion');
             });
         })
-}
-
-console.log(retrieveRate('USD_NGN'));
-
-function retrieveRate(ex_rate) {
-    if ('indexedDB' in window) {
-        console.log('YAAAAAAAYYYYY');
-    }
-    const dbPromise = idb.open('cc-db2', 4, upgradeDb => {
-        switch (upgradeDb.oldVersion) {
-            case 0:
-                console.log('making a new object store');
-                let converterStore = upgradeDb.createObjectStore('converter', { keyPath: 'id' });
-            case 1:
-                console.log('making second object store');
-                let conversionStore = upgradeDb.createObjectStore('conversion', { keyPath: 'pair' });
-        }
-    
-    });
-    
-     return dbPromise.then(db => {
-         
-         console.log('DB Object is', db);
-         let currency_pair = ex_rate;
-        return db.transaction('conversion').objectStore('conversion').get('USD_NGN');
-    })
-    .then(objFromIDB => {
-       
-        console.log('you are done')
-        console.log(`no way ${objFromIDB}`);
-        return objFromIDB;
-    })
 }

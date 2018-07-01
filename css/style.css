@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Gilroy',
     -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
@@ -12,9 +11,10 @@ body {
     font-style: normal;
     font-size: 1.0rem;
     line-height: 1.6;
-    background-color: #ffffff;
+    background-color: #ECEFF1;
+    position: relative;
+    height: 100vh;
 }
-
 /* header */
 .header {
     background-color: #3359DF;
@@ -26,46 +26,64 @@ body {
     box-shadow: 0 3px 5px #ccc;
     width: 100%;
 }
-
 /* wrapper */
 .wrapper {
     display: flex;
     flex-direction: column;
     padding: 2rem;
-    width: 400px;
+    width: 345px;;
     max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    background-color: #ffffff;
+    margin: 3em auto;
+    border-radius: 5px;
 }
-
 .btn-convert {
     align-self: center;
     width: 120px;
     padding: 10px;
     font-size: 0.8rem;
-    background-color: #3359DF;
+    background: #000046; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #3359DF, #1cb5e0); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #3359DF, #1cb5e0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     border: none;
     color: #ffffff;
     box-shadow: 3px 3px 5px #ccc;
     border-radius: 3px;
     font-weight: 500;
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     cursor: pointer;
 }
-
 span {
     font-weight: 300;
     color: #888888;
     font-size: 0.9rem;
 }
-
 input.amount, select {
     margin: 1rem 0;
     border: none;
-    border-bottom: 1px solid #737373;
+    border-bottom: 1px solid #ccc;
+    color: #3c3c3ce8;
 }
-input.converted-amount {
-    margin: 1.5rem 0;
-    border: 1px solid rgba(0,0,0,.35);
-    padding: 0.3rem;
+.converted-amount {
+    border: 1px solid #ccc;
+    text-align: center;
+    font-weight: 500;
+    height: 25px;
+}
+.summary {
+    text-align: center;
+    color: #3359DF;
+    margin-bottom: 1em;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    padding: 10px 20px;
+    text-align: center;
+    width: 100%;
+    background-color: #373737;
+    color: #ffffff;
+}
+a {
+    color: #ffffff;
 }
