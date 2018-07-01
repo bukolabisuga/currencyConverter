@@ -15,18 +15,18 @@ let allCaches = [
 ];
 
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/css/style.css',
-    '/js/main.js',
-    '/js/db.js',
-    '/idb/lib/idb.js',
-    '/fonts/Gilroy-Bold.woff',
-    '/fonts/Gilroy-Bold.woff2',
-    '/fonts/Gilroy-Light.woff',
-    '/fonts/Gilroy-Light.woff2',
-    '/fonts/Gilroy-Medium.woff',
-    '/fonts/Gilroy-Medium.woff2'
+    './',
+    './index.html',
+    './css/style.css',
+    './js/main.js',
+    './js/db.js',
+    './idb/lib/idb.js',
+    './fonts/Gilroy-Bold.woff',
+    './fonts/Gilroy-Bold.woff2',
+    './fonts/Gilroy-Light.woff',
+    './fonts/Gilroy-Light.woff2',
+    './fonts/Gilroy-Medium.woff',
+    './fonts/Gilroy-Medium.woff2'
 ];
 
 self.addEventListener('install', event => {
