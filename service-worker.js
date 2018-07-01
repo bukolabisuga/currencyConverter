@@ -9,7 +9,7 @@ if ('serviceWorker' in navigator) {
     console.log('Service workers are not supported.');
 }
 
-const staticCacheName = 'currency-static-v95';
+const staticCacheName = 'currency-static-v96';
 
 let allCaches = [
     staticCacheName
