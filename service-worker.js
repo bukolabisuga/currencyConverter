@@ -9,7 +9,7 @@ if ('serviceWorker' in navigator) {
     console.log('Service workers are not supported.');
 }
 
-const staticCacheName = 'currency-static-v101';
+const staticCacheName = 'currency-static-v102';
 
 let allCaches = [
     staticCacheName
@@ -25,7 +25,8 @@ const urlsToCache = [
     './fonts/Gilroy-Bold.woff',
     './fonts/Gilroy-Bold.woff2',
     './fonts/Gilroy-Light.woff',
-    './fonts/Gilroy-Light.woff2'
+    './fonts/Gilroy-Light.woff2',
+    "https://free.currencyconverterapi.com/api/v5/currencies"
 ];
 
 self.addEventListener('install', event => {
@@ -41,6 +42,14 @@ self.addEventListener('install', event => {
             )
     )
 });
+
+self.addEventListener("install", event => {
+    // Cache static resources
+    event.waitUntil(
+      // .addAll is atomic, i.e. if one of the caches didn't go well the installation will fail
+      caches.open(staticCache).then(cache => cache.addAll(staticAssets))
+    );
+  });
 
 self.addEventListener('activate', event => {
     console.log('[ServiceWorker] Activate');
